@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import '../styles/sidebar.scss';
+import '../styles/global.scss';
 
 import { Button } from '../components/Button';
 
@@ -55,11 +56,6 @@ return (
 
     </nav>
 
-    <div className="container">
-      <header>
-        <span className="category">Categoria:<span> {selectedGenre.title}</span></span>
-      </header>
-   </div>
   </div>
  )
 }
