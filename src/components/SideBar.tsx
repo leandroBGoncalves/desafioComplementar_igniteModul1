@@ -13,32 +13,24 @@ interface GenreResponseProps {
   title: string;
 }
 
-export function SideBar() {
+interface SideBarProps {
+  genreId: number;
+
+
+onGenreChange(id: number): void;
+}
+
+export function SideBar(props: SideBarProps) {
   // Complete aqui
-  const [selectedGenreId, setSelectedGenreId] = useState(1);
-
   const [genres, setGenres] = useState<GenreResponseProps[]>([]);
-
-  const [selectedGenre, setSelectedGenre] = useState<GenreResponseProps>({} as GenreResponseProps);
 
   useEffect(() => {
     api.get<GenreResponseProps[]>('genres').then(response => {
       setGenres(response.data);
     });
-  
-
-  api.get<GenreResponseProps>(`genres/${selectedGenreId}`).then(response => {
-    setSelectedGenre(response.data);
-  })
- }, [selectedGenreId])
-
-
-function handleClickButton(id: number) {
-  setSelectedGenreId(id);
-}
+  }, []);
 
 return (
-  <div style={{ display: 'flex', flexDirection: 'row' }}>
     <nav className="sidebar">
       <span>Watch<p>Me</p></span>
 
@@ -48,14 +40,12 @@ return (
             key={String(genre.id)}
             title={genre.title}
             iconName={genre.name}
-            onClick={() => handleClickButton(genre.id)}
-            selected={selectedGenreId === genre.id}
+            onClick={() => { props.onGenreChange(genre.id) }}
+            selected={props.genreId === genre.id}
           />
         ))}
       </div>
 
     </nav>
-
-  </div>
  )
 }

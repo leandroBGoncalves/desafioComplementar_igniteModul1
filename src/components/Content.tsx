@@ -5,11 +5,8 @@ import '../styles/global.scss';
 
 import { api } from '../services/api';
 
-import { Button } from '../components/Button';
-
 import { MovieCard } from '../components/MovieCard';
 
-import { SideBar } from '../components/SideBar';
 
 interface GenreResponseProps {
   id: number;
@@ -28,20 +25,26 @@ interface MovieProps {
   Runtime: string;
 }
 
-export function Content() {
-  // Complete aqui
-  const [selectedGenreId, setSelectedGenreId] = useState(1);
+interface ContentProps {
+  genreId: number;
+}
 
+export function Content(props: ContentProps) {
+  // Complete aqui
   const [movies, setMovies] = useState<MovieProps[]>([]);
 
   const [selectedGenre, setSelectedGenre] = useState<GenreResponseProps>({} as GenreResponseProps);
- 
+
 
   useEffect(() => {
-     api.get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`).then(response => {
+     api.get<MovieProps[]>(`movies/?Genre_id=${props.genreId}`).then(response => {
       setMovies(response.data);
+    });
+    
+    api.get<GenreResponseProps>(`genres/${props.genreId}`).then(response => {
+      setSelectedGenre(response.data);
     })
-    }, [selectedGenreId]);
+  }, [props]);
 
     
 
